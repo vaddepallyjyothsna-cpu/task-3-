@@ -1,0 +1,88 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Sample dataset included in the code
+data = {
+    "Product": [
+        "Laptop", "Phone", "Tablet", "Laptop",
+        "Phone", "Tablet", "Laptop", "Phone",
+        "Tablet", "Laptop", "Phone", "Tablet"
+    ],
+    "Month": [
+        "Jan", "Jan", "Jan", "Feb",
+        "Feb", "Feb", "Mar", "Mar",
+        "Mar", "Apr", "Apr", "Apr"
+    ],
+    "Sales": [
+        50000, 30000, 20000, 60000,
+        35000, 25000, 55000, 40000,
+        22000, 65000, 45000, 28000
+    ],
+    "Quantity": [
+        5, 10, 8, 6, 12, 10,
+        5, 13, 9, 7, 15, 11
+    ]
+}
+
+df = pd.DataFrame(data)
+
+print("CODSOFT - TASK 3")
+print("DATA VISUALIZATION DASHBOARD")
+print("\nDataset:")
+print(df.to_string(index=False))
+
+# Summary information
+print("\nTotal Sales:", df["Sales"].sum())
+print("Total Quantity Sold:", df["Quantity"].sum())
+
+# 1. Sales by product
+product_sales = df.groupby("Product")["Sales"].sum()
+
+plt.figure(figsize=(8, 5))
+product_sales.plot(kind="bar")
+plt.title("Total Sales by Product")
+plt.xlabel("Product")
+plt.ylabel("Sales")
+plt.xticks(rotation=0)
+plt.tight_layout()
+plt.show()
+
+# 2. Monthly sales
+monthly_sales = (
+    df.groupby("Month")["Sales"]
+    .sum()
+    .reindex(["Jan", "Feb", "Mar", "Apr"])
+)
+
+plt.figure(figsize=(8, 5))
+monthly_sales.plot(kind="line", marker="o")
+plt.title("Monthly Sales Trend")
+plt.xlabel("Month")
+plt.ylabel("Sales")
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+# 3. Sales share by product
+plt.figure(figsize=(7, 7))
+product_sales.plot(kind="pie", autopct="%1.1f%%")
+plt.title("Product Sales Distribution")
+plt.ylabel("")
+plt.tight_layout()
+plt.show()
+
+# 4. Quantity vs sales
+plt.figure(figsize=(8, 5))
+plt.scatter(df["Quantity"], df["Sales"])
+plt.title("Quantity vs Sales")
+plt.xlabel("Quantity Sold")
+plt.ylabel("Sales")
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+# Save dataset
+df.to_csv("task3_sales_data.csv", index=False)
+
+print("\nTask 3 completed successfully!")
+print("Dataset saved as task3_sales_data.csv")
